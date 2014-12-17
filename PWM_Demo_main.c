@@ -86,7 +86,7 @@ void mod_init_pwm(void)
 
     TRISBbits.TRISB0 = 0;    // Set RB0 (CCP1) as output for PWM
 
-    T2CONbits.T2CKPS1 = 1;   // Prescalar = 1:4
+    T2CONbits.T2CKPS1 = 0;   // Prescalar = 1:4
     T2CONbits.T2CKPS0 = 1;
 
     T2CONbits.TMR2ON = 1;    // Timer2 ON
