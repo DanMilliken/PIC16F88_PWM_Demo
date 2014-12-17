@@ -73,7 +73,7 @@ void mod_init_ad(void)
     ADCON0bits.ADON = 1;   // Turn on the A/D
     ADCON0bits.CHS = 0;    // Use channel AN0 for A/D
     ADCON1bits.ADFM = 1;   // Result right justified
-    ADCON1bits.ADCS2 = 0;  // 8 * TOSC = 1.6us
+    ADCON1bits.ADCS2 = 0;  // 8 * TOSC = 2us
     ADCON0bits.ADCS1 = 0;
     ADCON0bits.ADCS0 = 1;
 
