@@ -279,7 +279,7 @@ download the executable.-->
 			<FIELD type='0' description='Name' value='C' show='0' pos='-8.00000,-4.00000'/>
 		</SYMBOL>
 		<POWER pos='140.00000,99.00000' which='4' direction='1'></POWER>
-		<SYMBOL id='4' pos='51.00000,114.00000' part='0' rotate='0' can_scale='0' show_power='0' scale_x='1.00000' scale_y='1.00000'>
+		<SYMBOL id='4' pos='51.00000,111.00000' part='0' rotate='0' can_scale='0' show_power='0' scale_x='1.00000' scale_y='1.00000'>
 			<FIELD type='0' description='Ref' value='220' show='1' pos='1.00000,-4.60000'/>
 			<FIELD type='0' description='Name' value='R' show='1' pos='1.00000,-7.00000'/>
 		</SYMBOL>
@@ -289,7 +289,12 @@ download the executable.-->
 		</SYMBOL>
 		<POWER pos='49.00000,121.00000' which='4' direction='1'></POWER>
 		<WIRE a='111.00000,95.00000' b='119.00000,95.00000'/>
-		<WIRE a='49.00000,105.00000' b='49.00000,99.00000'/>
-		<WIRE a='49.00000,99.00000' b='60.00000,99.00000'/>
+		<POWER pos='49.00000,102.00000' which='0' direction='0'>5V</POWER>
+		<WIRE a='60.00000,99.00000' b='57.00000,99.00000'/>
+		<WIRE a='57.00000,99.00000' b='57.00000,112.00000'/>
+		<WIRE a='57.00000,112.00000' b='49.00000,112.00000'/>
+		<WIRE a='49.00000,112.00000' b='49.00000,110.00000'/>
+		<JUNCTION pos='49.00000,112.00000'/>
+		<WIRE a='49.00000,114.00000' b='49.00000,112.00000'/>
 	</TinyCAD>
 </TinyCADSheets>
