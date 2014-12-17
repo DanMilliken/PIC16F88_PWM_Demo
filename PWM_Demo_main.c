@@ -40,10 +40,9 @@
 #pragma config FOSC = INTOSCIO  // Internal oscillator
 
 // function prototypes
-void mod_init_uart(void);
 void mod_init_ad(void);
-void PWMInit(void);
-void Set_PWM(unsigned int VALUE);
+void mod_init_pwm(void);
+void set_pwm(unsigned int value);
 void interrupt isr(void);
 
 int main(void)
@@ -52,14 +51,11 @@ int main(void)
     OSCCONbits.IRCF = 0b110;       // Set internal RC oscillator to 4 MHz
     while(!OSCCONbits.IOFS);       // Wait for frequency to stabalize
 
-    mod_init_uart();     // initialize the UART module
     mod_init_ad();       // initialize the A/D
-    PWMInit();           // initialize the PWM (CCP1)
+    mod_init_pwm();      // initialize the PWM (CCP1)
 
     INTCONbits.PEIE = 1; // enable peripheral interrupts
     INTCONbits.GIE = 1;  // enable interrupts
-
-    printf("*** PWM demo system startup ***\n");
 
     while(1)
     {
@@ -84,25 +80,7 @@ void mod_init_ad(void)
     return;
 }
 
-void mod_init_uart(void)
-{
-    TRISB = 0b00100100; // TRISB<5,2> as input. Others as output.
-    TXSTAbits.BRGH = 1; // high baud rate
-    TXSTAbits.SYNC = 0; // asynchronous mode
-    TXSTAbits.TX9  = 0; // 8-bit transmission
-    RCSTAbits.CREN = 1; // continuous receive enable
-
-    #assert _XTAL_FREQ == 4000000  // SPBRG is based on 4 MHz clock
-    SPBRG = 25;                    // 9600 baud @ 4MHz with BRGH = 1
-
-    PIE1bits.RCIE  = 1;
-    RCSTAbits.SPEN = 1;
-    TXSTAbits.TXEN = 1; // enable transmitter
-
-    return;
-}
-
-void PWMInit(void)
+void mod_init_pwm(void)
 {
     PR2 = 255;               // Period register 255
 
@@ -118,21 +96,7 @@ void PWMInit(void)
     return;
 }
 
-// Override putch called by printf
-void putch(unsigned char byte)
-{
-    while (!TXSTAbits.TRMT);
-    TXREG = byte;
-    if ('\n' == byte)
-    {
-        while (!TXSTAbits.TRMT);
-        TXREG = '\r';
-    }
-
-    return;
-}
-
-void Set_PWM(unsigned int VALUE)
+void set_pwm(unsigned int VALUE)
 {
     // PWM duty cycle is stored in (CCPR1L:CCP1CON<5:4>)
     CCPR1L = VALUE >> 2;
@@ -145,10 +109,9 @@ void process_ad(void)
     PIE1bits.ADIE = 0;  // disable the A/D interrupt
     PIR1bits.ADIF = 0;  // Reset the A/D interrupt flag
     unsigned int ad_result = ADRESH * 256 + ADRESL;
-    printf("A/D Result: %u\n", ad_result);
     // Set the PWM duty cycle to ad_result to give a duty cycle in the range
     // of 0 to 1024 us
-    Set_PWM(ad_result);
+    set_pwm(ad_result);
     return;
 }
 
@@ -160,4 +123,3 @@ void interrupt isr(void)
 
     return;
 }
-
